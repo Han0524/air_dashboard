@@ -7,16 +7,20 @@ import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
 export default function RawDataTableRow({
-  latitude,
-  longitude,
-  battery,
-  status,
+  date, 
+  location,
+  pm25,
+  pm10,
+  ch2o,
+  temperature,
+  humidity,
+  wind_direction,
+  wind_speed
 }) {
   const [open, setOpen] = useState(null);
 
@@ -32,15 +36,23 @@ export default function RawDataTableRow({
     <>
       <TableRow hover>
 
-        <TableCell align="center">{battery}</TableCell>
+        <TableCell align="center">{date}</TableCell>
 
-        <TableCell align="center">
-          <Label color={(status === 'error' && 'error') || 'success'}>{status}</Label>
-        </TableCell>
+        <TableCell align="center">{location}</TableCell>
 
-        <TableCell align="center">{latitude}</TableCell>
+        <TableCell align="center">{pm25}</TableCell>
 
-        <TableCell align="center">{longitude}</TableCell>
+        <TableCell align="center">{pm10}</TableCell>
+
+        <TableCell align="center">{ch2o}</TableCell>
+
+        <TableCell align="center">{temperature}</TableCell>
+
+        <TableCell align="center">{humidity}</TableCell>
+
+        <TableCell align="center">{wind_direction}</TableCell>
+
+        <TableCell align="center">{wind_speed}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>
@@ -74,8 +86,13 @@ export default function RawDataTableRow({
 }
 
 RawDataTableRow.propTypes = {
-  battery: PropTypes.any,
-  latitude: PropTypes.any,
-  longitude: PropTypes.any,
-  status: PropTypes.string,
+  date: PropTypes.any,
+  location: PropTypes.any,
+  pm25: PropTypes.any,
+  pm10: PropTypes.any,
+  ch2o: PropTypes.any,
+  temperature: PropTypes.any,
+  humidity: PropTypes.any,
+  wind_direction: PropTypes.any,
+  wind_speed: PropTypes.any,
 };

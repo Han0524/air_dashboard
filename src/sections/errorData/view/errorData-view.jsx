@@ -15,13 +15,11 @@ import { errorData } from 'src/_mock/errorData';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
+import { emptyRows} from '../utils';
 import ErrorTableRow from '../error-table-row';
 import ErrorTableHead from '../error-table-head';
 import TableEmptyRows from '../table-empty-rows';
-import ErrorTableToolbar from '../error-table-toolbar';
 import ErrorTableSelection from '../error-table-selection';
-import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
@@ -31,11 +29,7 @@ export default function ErrorDataView() {
 
   const [order, setOrder] = useState('asc');
 
-  const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('date');
-
-  const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -47,15 +41,6 @@ export default function ErrorDataView() {
     }
   };
 
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = errorData.map((n) => n.location);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -64,19 +49,6 @@ export default function ErrorDataView() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const dataFiltered = applyFilter({
-    inputData: errorData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-  });
-
-  const notFound = !dataFiltered.length && !!filterName;
 
   return (
     <Container>
@@ -89,11 +61,6 @@ export default function ErrorDataView() {
       </Stack>
 
       <Card>
-        <ErrorTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
 
         <ErrorTableSelection/>
 
@@ -104,9 +71,7 @@ export default function ErrorDataView() {
                 order={order}
                 orderBy={orderBy}
                 rowCount={errorData.length}
-                numSelected={selected.length}
                 onRequestSort={handleSort}
-                onSelectAllClick={handleSelectAllClick}
                 headLabel={[
                   { id: 'sequence', label: '순번'},
                   { id: 'date', label: '측정일'},
@@ -121,7 +86,7 @@ export default function ErrorDataView() {
                 ]}
               />
               <TableBody>
-                {dataFiltered
+                {errorData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <ErrorTableRow
@@ -143,7 +108,6 @@ export default function ErrorDataView() {
                   emptyRows={emptyRows(page, rowsPerPage, errorData.length)}
                 />
 
-                {notFound && <TableNoData query={filterName} />}
               </TableBody>
             </Table>
           </TableContainer>

@@ -8,7 +8,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Dropdown from 'src/components/dropdown/dropdown';
 
 import {
-    selectHourOptions,
     selectLocationOptions
 } from "../../constants/selectOption";
 
@@ -76,7 +75,6 @@ const SearchButton = styled.button`
     cursor: pointer;
 `;
 
-
 const CustomInput = React.forwardRef(({ onClick }, ref) => (
     <button type="button" onClick={onClick} ref={ref} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
       <FaCalendarAlt style={{ color: "#212A36", fontSize: "1em" }} />
@@ -87,18 +85,13 @@ CustomInput.propTypes = {
     onClick: PropTypes.func.isRequired, // 클릭 이벤트 핸들러 함수이므로, func 타입이며 필수입니다.
 };
   
-function ErrorTableSelection(){
+function RawDataTableSelection(){
 
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedHour, setSelectedHour] = useState(selectHourOptions[0]);
     const [selectedLocation, setSelectedLocation] = useState(selectLocationOptions[0]);
 
     const handleDateSelect = (date) => {
         setSelectedDate(date);
-    }
-
-    const handleHourSelect = (hour) => {
-        setSelectedHour(hour);
     }
 
     const handleLocationSelect = (location) => {
@@ -136,15 +129,6 @@ function ErrorTableSelection(){
                         </StyledDiv>
                     </FlexDiv>
 
-                    <FlexDiv>
-                        <FixedP>측정시간</FixedP>
-                        <Dropdown
-                            optionData={selectHourOptions}
-                            selectedValue={selectedHour}
-                            handleSelectedValue={handleHourSelect}
-                        />
-                    </FlexDiv>
-
                 </ResponsiveFlexDiv>
                 
                 <SearchButtonDiv>
@@ -156,4 +140,4 @@ function ErrorTableSelection(){
     );
 }
 
-export default ErrorTableSelection;
+export default RawDataTableSelection;

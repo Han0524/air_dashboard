@@ -1,10 +1,21 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import "./dropdown.css";
+const CustomSelect = styled.select`
+  width: 130px;
+  padding: 8px;
+  font-size: 0.8em;
+  border-radius: 10px;
+  background-color: #F4F6F8;
+  border-color: transparent;
+  cursor: pointer;
+  color: #616161;
+  outline: none;
+`;
 
 const Dropdown = ({ optionData, selectedValue, handleSelectedValue }) => (
-  <select
+  <CustomSelect
     value={selectedValue}
     onChange={(e) => handleSelectedValue(e.target.value)}
     className="custom-dropdown"
@@ -14,7 +25,7 @@ const Dropdown = ({ optionData, selectedValue, handleSelectedValue }) => (
         {value}
       </option>
     ))}
-  </select>
+  </CustomSelect>
 );
 
 Dropdown.propTypes = {

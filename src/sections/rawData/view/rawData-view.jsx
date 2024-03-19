@@ -15,12 +15,11 @@ import { rawData } from 'src/_mock/rawData';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
+import { emptyRows } from '../utils';
 import TableEmptyRows from '../table-empty-rows';
 import RawDataTableRow from '../rawData-table-row';
 import RawDataTableHead from '../rawData-table-head';
-import RawDataTableToolbar from '../rawData-table-toolbar';
-import { emptyRows, applyFilter, getComparator } from '../utils';
+import RawDataTableSelection from '../rawData-table-selection';
 
 // ----------------------------------------------------------------------
 
@@ -30,11 +29,7 @@ export default function RawDataView() {
 
   const [order, setOrder] = useState('asc');
 
-  const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -46,24 +41,6 @@ export default function RawDataView() {
     }
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -72,19 +49,6 @@ export default function RawDataView() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const dataFiltered = applyFilter({
-    inputData: rawData,
-    comparator: getComparator(order, orderBy),
-    filterName,
-  });
-
-  const notFound = !dataFiltered.length && !!filterName;
 
   return (
     <Container>
@@ -97,11 +61,7 @@ export default function RawDataView() {
       </Stack>
 
       <Card>
-        <RawDataTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
+        <RawDataTableSelection/>
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
@@ -124,19 +84,20 @@ export default function RawDataView() {
                 ]}
               />
               <TableBody>
-                {dataFiltered
+                {rawData
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row) => (
                     <RawDataTableRow
                       key={row.id}
+                      date={row.date}
                       location={row.location}
-                      longitude={row.longitude}
-                      status={row.status}
-                      latitude={row.latitude}
-                      avatarUrl={row.avatarUrl}
-                      battery={row.battery}
-                      selected={selected.indexOf(row.location) !== -1}
-                      handleClick={(event) => handleClick(event, row.location)}
+                      pm25={row.pm25}
+                      pm10={row.pm10}
+                      ch2o={row.ch2o}
+                      temperature={row.temperature}
+                      humidity={row.humidity}
+                      wind_direction={row.wind_direction}
+                      wind_speed={row.wind_speed}
                     />
                   ))}
 
@@ -145,7 +106,6 @@ export default function RawDataView() {
                   emptyRows={emptyRows(page, rowsPerPage, rawData.length)}
                 />
 
-                {notFound && <TableNoData query={filterName} />}
               </TableBody>
             </Table>
           </TableContainer>
