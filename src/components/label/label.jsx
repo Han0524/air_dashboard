@@ -55,6 +55,7 @@ Label.propTypes = {
     'success',
     'warning',
     'error',
+    'checking'
   ]),
 };
 

@@ -1,0 +1,141 @@
+import PropTypes from 'prop-types'; 
+import styled from 'styled-components';
+import React, { useState } from 'react';
+import DatePicker from "react-datepicker";
+import { FaCalendarAlt } from "react-icons/fa";
+import "react-datepicker/dist/react-datepicker.css";
+
+import Dropdown from 'src/components/dropdown/dropdown';
+
+import {
+    selectHourOptions,
+    selectLocationOptions
+} from "../../constants/selectOption";
+
+
+// ----------------------------------------------------------------------
+
+const StyledDatePicker = styled(DatePicker)`
+    width: 800px;
+    display: flex;
+`;
+
+const FixedP = styled.p`
+    min-width:70px;
+`;
+
+const FlexDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+`;
+
+const ResponsiveFlexDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+
+    @media (max-width: 700px) {
+        display: block;
+        margin-left: 30px;
+    }
+`;
+
+const SearchButtonDiv = styled.div`
+display: flex;
+  justify-content: center;
+  margin: 30px;
+`;
+
+const SearchButton = styled.button`
+    background-color: rgba(85, 183, 107);
+    border: none;
+    margin-top: 10px;
+    padding: 10px 30px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+`;
+
+
+const CustomInput = React.forwardRef(({ onClick }, ref) => (
+    <button type="button" onClick={onClick} ref={ref} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
+      <FaCalendarAlt style={{ color: "rgba(85,183,107)", fontSize: "1.2em" }} />
+    </button>
+));
+
+CustomInput.propTypes = {
+    onClick: PropTypes.func.isRequired, // 클릭 이벤트 핸들러 함수이므로, func 타입이며 필수입니다.
+};
+  
+function ErrorTableSelection(){
+
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [selectedHour, setSelectedHour] = useState(selectHourOptions[0]);
+    const [selectedLocation, setSelectedLocation] = useState(selectLocationOptions[0]);
+
+    const handleDateSelect = (date) => {
+        setSelectedDate(date);
+    }
+
+    const handleHourSelect = (hour) => {
+        setSelectedHour(hour);
+    }
+
+    const handleLocationSelect = (location) => {
+        setSelectedLocation(location);
+    }
+
+    const handleSearchButton = () => {
+        console.log("검색버튼 누름");
+    };
+
+
+    return (
+        <div>
+            <div>
+                <ResponsiveFlexDiv>
+                    <FlexDiv>
+                        <FixedP>측정위치</FixedP>
+                        <Dropdown
+                            optionData={selectLocationOptions}
+                            selectedValue={selectedLocation}
+                            handleSelectedValue={handleLocationSelect}
+                        />
+                    </FlexDiv>
+
+                    <FlexDiv>
+                        <FixedP>측정일자</FixedP>
+                        {selectedDate && <div>{selectedDate.toLocaleDateString()}</div>}
+                        <StyledDatePicker
+                            selected={selectedDate}
+                            onChange={date => handleDateSelect(date)}
+                            dateFormat="yyyy MMMM dd"
+                            customInput={<CustomInput />}
+                        />
+                    </FlexDiv>
+
+                    <FlexDiv>
+                        <FixedP>측정시간</FixedP>
+                        <Dropdown
+                            optionData={selectHourOptions}
+                            selectedValue={selectedHour}
+                            handleSelectedValue={handleHourSelect}
+                        />
+                    </FlexDiv>
+
+                </ResponsiveFlexDiv>
+                
+                <SearchButtonDiv>
+                    <SearchButton onClick={handleSearchButton} type="button">검색</SearchButton>
+                </SearchButtonDiv>
+                
+            </div>
+        </div>
+    );
+}
+
+export default ErrorTableSelection;
