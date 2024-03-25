@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,7 +10,8 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { nodes } from 'src/_mock/node';
+import useNodeInfoStore from 'src/store/nodeInfoStore';
+// import { nodes } from 'src/_mock/node';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -20,20 +21,14 @@ import UserTableRow from '../user-table-row';
 import UserTableHead from '../user-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UserTableToolbar from '../user-table-toolbar';
-import { fetchNodeInfo } from '../../../api/nodeInfoApi';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 // ----------------------------------------------------------------------
 
 export default function NodeView() {
 
-  useEffect(() => {
-    console.log("asdf");
-    console.log(fetchNodeInfo());
-  }, []);
-
+  const { nodes } = useNodeInfoStore();
   
-
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -142,14 +137,13 @@ export default function NodeView() {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+                  .map((row, index) => (
                     <UserTableRow
-                      key={row.id}
+                      key={index}
                       location={row.location}
                       longitude={row.longitude}
-                      status={row.status}
+                      status='active'
                       latitude={row.latitude}
-                      avatarUrl={row.avatarUrl}
                       battery={row.battery}
                       selected={selected.indexOf(row.location) !== -1}
                       handleClick={(event) => handleClick(event, row.location)}

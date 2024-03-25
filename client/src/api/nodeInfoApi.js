@@ -1,51 +1,35 @@
 import axiosInstance from './axiosInstance';
 
-export const fetchNodeInfo = async () => {
-    const requestURL = "/api/nodeInfo";
+const requestURL = "/api/nodeInfo";
 
-    console.log("🚀 ~ fetchNodeInfo: ", requestURL);
-
+export const fetchNodes = async () => {
     const response = await axiosInstance.get(requestURL);
-
     return response.data;
 };
 
-export const createNodeInfo = async (nodeAddress,location,latitude,longitude) => {
-  const requestURL = "/api/nodeInfo";
-
+export const createNode = async (nodeAddress,location,latitude,longitude) => {
   const requestBody = {
     nodeAddress,
     location,
     latitude,
     longitude,
   };
-    
   const response = await axiosInstance.post(requestURL, requestBody);
-  
   return response.data;
 };
 
-export const updateNodeInfo = async (id,latitude,longitude) => { 
-
-  const requestURL = "/api/nodeInfo";
-
+export const updateNode = async (id,latitude,longitude) => { 
   const requestBody = {
     latitude,
     longitude,
     id,
   };
-
-  console.log("🚀 ~ updateNodeInfo ~ requestURL:", requestURL);
-  console.log("🚀 ~ updateNodeInfo ~ requestBody:", requestBody);
-    
-  const response = await axiosInstance.put(requestURL, requestBody);
-  
+  const response = await axiosInstance.put(`${requestURL}/${id}`, requestBody);
   return response.data;
 };
 
-export const deleteNodeInfo = async (id) => {
-  console.log("🚀 ~ updateNodeInfo ~ requestURL:", `/api/nodeInfo/${id}`);
-  const response = await axiosInstance.delete(`/api/nodeInfo/${id}`);
+export const deleteNode = async (id) => {
+  const response = await axiosInstance.delete(`${requestURL}/${id}`);
 
   return response.data;
 };

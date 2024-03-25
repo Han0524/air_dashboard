@@ -19,7 +19,6 @@ import Iconify from 'src/components/iconify';
 export default function UserTableRow({
   selected,
   location,
-  avatarUrl,
   latitude,
   longitude,
   battery,
@@ -45,7 +44,7 @@ export default function UserTableRow({
 
         <TableCell component="th" scope="row" padding="none" align="center" >
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={location} src={avatarUrl} />
+            <Avatar alt={location} src="/assets/images/node.png" />
             <Typography variant="subtitle2" noWrap>
               {location}
             </Typography>
@@ -94,7 +93,6 @@ export default function UserTableRow({
 }
 
 UserTableRow.propTypes = {
-  avatarUrl: PropTypes.any,
   handleClick: PropTypes.func,
   battery: PropTypes.any,
   location: PropTypes.any,
