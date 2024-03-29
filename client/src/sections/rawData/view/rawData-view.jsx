@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,7 +10,10 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
+import { useRawData } from 'src/hooks/useRawData';
+
 import { rawData } from 'src/_mock/rawData';
+import useRawDataStore from 'src/store/rawDataStore';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -21,9 +24,21 @@ import RawDataTableRow from '../rawData-table-row';
 import RawDataTableHead from '../rawData-table-head';
 import RawDataTableSelection from '../rawData-table-selection';
 
+
 // ----------------------------------------------------------------------
 
 export default function RawDataView() {
+
+  const { isPending, error, data } = useRawData();
+  const { setRawData } = useRawDataStore();
+  
+  useEffect(() => {
+    if (!isPending && !error && data) {
+      setRawData(data.data);
+    }
+  }, [isPending, error, data,setRawData]);
+
+
 
   const [page, setPage] = useState(0);
 

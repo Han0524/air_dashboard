@@ -15,3 +15,4 @@ export const errorData = [...Array(9)].map((_, index) => ({
     solution: sample(["베터리 교체"]),
     done: sample(['Yes','No']),
   }));
+
