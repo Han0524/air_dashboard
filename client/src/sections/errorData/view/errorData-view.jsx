@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,12 +10,14 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { errorData } from 'src/_mock/errorData';
+import { useErrors } from 'src/hooks/useErrorData'; // Missed spacing between imports
+import { errorData } from 'src/_mock/errorData'; // Missed spacing between imports
+import useErrorDataStore from 'src/store/errorDataStore';
 
-import Iconify from 'src/components/iconify';
+import Iconify from 'src/components/iconify'; // Removed extra semicolon
 import Scrollbar from 'src/components/scrollbar';
 
-import { emptyRows} from '../utils';
+import { emptyRows } from '../utils';
 import ErrorTableRow from '../error-table-row';
 import ErrorTableHead from '../error-table-head';
 import TableEmptyRows from '../table-empty-rows';
@@ -24,6 +26,15 @@ import ErrorTableSelection from '../error-table-selection';
 // ----------------------------------------------------------------------
 
 export default function ErrorDataView() {
+
+  const { isPending, error, data } = useErrors();
+  const { setErrorData } = useErrorDataStore();
+  
+  useEffect(() => {
+    if (!isPending && !error && data) {
+      setErrorData(data.data);
+    }
+  }, [isPending, error, data, setErrorData]);
 
   const [page, setPage] = useState(0);
 
