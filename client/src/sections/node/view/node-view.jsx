@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,7 +12,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
 import useNodeInfoStore from 'src/store/nodeInfoStore';
-// import { nodes } from 'src/_mock/node';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -98,12 +98,18 @@ export default function NodeView() {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  const navigate = useNavigate();
+  
+  const handleAddNodeButton = () => {
+    navigate('add'); // 현재 URL에 `/add`를 추가합니다.
+  };
+
   return (
     <Container>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">Nodes</Typography>
 
-        <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+        <Button onClick={handleAddNodeButton} variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New Node
         </Button>
       </Stack>

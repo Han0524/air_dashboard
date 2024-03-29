@@ -1,6 +1,5 @@
+import { Outlet } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-
-import { NodeView } from 'src/sections/node/view';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +10,7 @@ export default function NodePage() {
         <title> Node | Minimal UI </title>
       </Helmet>
 
-      <NodeView />
+      <Outlet />
     </>
   );
 }

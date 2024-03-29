@@ -3,6 +3,9 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 
+import { NodeView } from 'src/sections/node/view';
+import { NodeAddView } from 'src/sections/node/add';
+
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const ManagerPage = lazy(() => import('src/pages/manager'));
 export const NodePage = lazy(() => import('src/pages/node'));
@@ -28,7 +31,14 @@ export default function Router() {
         { path: 'errorData', element: <ErrorDataPage /> },
         { path: 'rawData', element: <RawDataPage /> },
         { path: 'manager', element: <ManagerPage /> },
-        { path: 'node', element: <NodePage /> },
+        { 
+          path: 'node', 
+          element: <NodePage />, 
+          children: [
+            { path: '', element: <NodeView />},
+            { path: 'add', element: <NodeAddView />},
+          ]
+        },
       ],
     },
     {
